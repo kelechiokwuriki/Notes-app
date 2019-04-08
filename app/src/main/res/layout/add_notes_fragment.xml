@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/colorPrimaryLight">
+
+    <!--<TextView-->
+        <!--android:id="@+id/addNoteTitle"-->
+        <!--android:text="Add note"-->
+        <!--android:textSize="35dp"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+
+    <EditText
+        android:id="@+id/input_note_title"
+        android:hint="Note title"
+        android:paddingTop="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/input_note"
+        android:hint="Enter note"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="top"
+        android:fitsSystemWindows="true"
+        android:breakStrategy="balanced"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:padding="5dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+    
+    <Button
+        android:background="@color/colorPrimary"
+        android:textColor="@color/black"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:elevation="5dp"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:text="Add note"
+        android:textSize="25dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+</LinearLayout>
