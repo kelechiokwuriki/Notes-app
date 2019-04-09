@@ -13,12 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -47,9 +51,17 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new addNotesFragment()).commit();
 
-            navigationView.setCheckedItem(R.id.view_notes);
+            navigationView.setCheckedItem(R.id.add_note);
         }
+
+        DatabaseHelper notesDb = new DatabaseHelper(this);
+
+        EditText noteTitleText = findViewById(R.id.editTextNoteTitle);
+        EditText noteText = findViewById(R.id.editTextNote);
+        Button addNoteButton = findViewById(R.id.buttonAddNote);
+
     }
+
 
     @Override
     public void onBackPressed() {

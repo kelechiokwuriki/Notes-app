@@ -1,23 +1,27 @@
 package com.example.notebookapp;
 
-import java.util.Calendar;
+import android.widget.EditText;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class Note {
     private String noteTitle;
     private String note;
 
-    Calendar dateOfCreation;
-    Calendar dateofModification;
+    private Date date;
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-    public Note(){
-        this.dateOfCreation = Calendar.getInstance();
-    }
+    String dateOfCreation;
+    String dateofModification;
 
     public Note(String noteTitle, String note){
         this.noteTitle = noteTitle;
         this.note = note;
-        this.dateOfCreation = Calendar.getInstance();
+
+        date = new Date();
+        this.dateOfCreation = String.valueOf(formatter.format(date));
     }
 
     public void setNoteTitle(String noteTitle) {
@@ -36,15 +40,15 @@ public class Note {
         return note;
     }
 
-    public Calendar getCurrentDateOfCreation(){
+    public String getCurrentDateOfCreation(){
         return dateOfCreation;
     }
 
-    public void setDateOfModification(Calendar dateofModification){
+    public void setDateOfModification(String dateofModification){
         this.dateofModification = dateofModification;
     }
 
-    public Calendar getDateofModification(){
+    public String getDateofModification(){
         return dateofModification;
     }
 
