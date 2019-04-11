@@ -1,4 +1,4 @@
-package com.example.notebookapp;
+package com.example.notebookapp.Models;
 
 import android.widget.EditText;
 
@@ -7,6 +7,7 @@ import java.util.Date;
 
 
 public class Note {
+    private int noteId;
     private String noteTitle;
     private String note;
 
@@ -16,12 +17,35 @@ public class Note {
     String dateOfCreation;
     String dateofModification;
 
+    public Note(){}
+
+    public Note(int noteId, String noteTitle, String note){
+        this.noteId = noteId;
+        this.noteTitle = noteTitle;
+        this.note = note;
+
+        date = new Date();
+        this.dateOfCreation = String.valueOf(formatter.format(date));
+    }
+
     public Note(String noteTitle, String note){
         this.noteTitle = noteTitle;
         this.note = note;
 
         date = new Date();
         this.dateOfCreation = String.valueOf(formatter.format(date));
+    }
+
+    public int getNoteId(){
+        return noteId;
+    }
+
+    public void setNoteId(int noteId){
+        this.noteId = noteId;
+    }
+
+    public void setDateOfCreation(String dateOfCreation){
+        this.dateOfCreation = dateOfCreation;
     }
 
     public void setNoteTitle(String noteTitle) {

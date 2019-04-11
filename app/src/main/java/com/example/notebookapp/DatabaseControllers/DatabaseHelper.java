@@ -1,9 +1,11 @@
-package com.example.notebookapp;
+package com.example.notebookapp.DatabaseControllers;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.notebookapp.Models.Note;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -15,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_4 = "DATE_CREATED";
     public static final String COLUMN_5 = "DATE_MODIFIED";
     public static final String COLUMN_6 = "NEWS_URL";
-
+    private SQLiteDatabase notesDatabase;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -36,16 +38,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean insertNote(Note note){
-        SQLiteDatabase db = this.getWritableDatabase();
+        notesDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_2, note.getNoteTitle());
         contentValues.put(COLUMN_3, note.getNote());
         contentValues.put(COLUMN_4, note.getCurrentDateOfCreation());
-        long result = db.insert(TABLE_NAME, null, contentValues);
+        long result = notesDatabase.insert(TABLE_NAME, null, contentValues);
 
         if(result == -1){
             return false;
         }
         else return true;
     }
+
+
+
+    public synchronized void closeDb(){
+        if(notesDatabase != null){
+            notesDatabase.close();
+        }
+    }
+
+//    private Note convertToNoteObject()
 }

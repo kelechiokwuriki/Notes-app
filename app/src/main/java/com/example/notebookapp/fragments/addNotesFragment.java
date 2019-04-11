@@ -1,4 +1,4 @@
-package com.example.notebookapp;
+package com.example.notebookapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.zip.Inflater;
+import com.example.notebookapp.DatabaseControllers.DatabaseHelper;
+import com.example.notebookapp.Models.Note;
+import com.example.notebookapp.R;
 
 public class addNotesFragment extends Fragment {
 
@@ -30,13 +32,24 @@ public class addNotesFragment extends Fragment {
         addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Note note = new Note(noteTitleText.getText().toString(), noteText.getText().toString());
-                db.insertNote(note);
-                Toast.makeText(addNotesFragment.super.getContext(), "Note added", Toast.LENGTH_LONG).show();
+                if(validateFields(noteTitleText, noteText)){
+                    Note note = new Note(noteTitleText.getText().toString(), noteText.getText().toString());
+                    db.insertNote(note);
+                    Toast.makeText(addNotesFragment.super.getContext(), "Note added", Toast.LENGTH_LONG).show();
+                }
+
+                Toast.makeText(addNotesFragment.super.getContext(), "Please enter at least a note title", Toast.LENGTH_LONG).show();
             }
         });
 
 
         return rootView;
+    }
+
+    private boolean validateFields(EditText noteTitleText, EditText noteText){
+        if((noteText.getText().toString().isEmpty()) && (noteText.getText().toString().isEmpty())){
+            return false;
+        }
+        return true;
     }
 }
