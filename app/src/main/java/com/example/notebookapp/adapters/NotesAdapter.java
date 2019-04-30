@@ -7,19 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.notebookapp.Models.Note;
+import com.example.notebookapp.Bean.Note;
 import com.example.notebookapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<SearchViewHolder>{
 
     private Context context;
-    private List<Note> noteList;
+    private List<Note> noteList = new ArrayList<>();
+    private NoteClickListener noteClickListener;
 
-    public NotesAdapter(Context context, List<Note> noteList) {
+    public NotesAdapter(Context context, List<Note> noteList, NoteClickListener noteClickListener) {
         this.context = context;
         this.noteList = noteList;
+        this.noteClickListener = noteClickListener;
     }
 
     @NonNull
@@ -29,7 +32,7 @@ public class NotesAdapter extends RecyclerView.Adapter<SearchViewHolder>{
 
         View noteView = layoutInflater.inflate(R.layout.view_notes, viewGroup, false);
 
-        return new SearchViewHolder(noteView);
+        return new SearchViewHolder(noteView, noteClickListener);
     }
 
     @Override
@@ -42,5 +45,9 @@ public class NotesAdapter extends RecyclerView.Adapter<SearchViewHolder>{
     @Override
     public int getItemCount() {
         return noteList.size();
+    }
+
+    public interface NoteClickListener{
+        void onNoteClicked(int clickedPosition);
     }
 }

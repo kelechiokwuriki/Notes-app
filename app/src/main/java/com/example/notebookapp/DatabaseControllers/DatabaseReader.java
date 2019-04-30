@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
-import com.example.notebookapp.Models.Note;
+import com.example.notebookapp.Bean.Note;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
@@ -19,15 +19,6 @@ public class DatabaseReader extends SQLiteAssetHelper {
 
     public DatabaseReader(Context context) {
         super(context, DATABASE_NAME, null, 1);
-    }
-
-    public Cursor getAllNotesFromDb(){
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(TABLE_NAME);
-        Cursor c = qb.query(db, null, null, null, null, null, null);
-        return c;
-
     }
 
     public List<String> getNoteTitles(){
@@ -46,6 +37,7 @@ public class DatabaseReader extends SQLiteAssetHelper {
             }
             while(cursor.moveToNext());
         }
+        notesDatabase.close();
         return noteList;
     }
 
@@ -74,6 +66,7 @@ public class DatabaseReader extends SQLiteAssetHelper {
                 noteList.add(note);
             } while(cursor.moveToNext());
         }
+        notesDatabase.close();
         return noteList;
     }
 
@@ -102,6 +95,7 @@ public class DatabaseReader extends SQLiteAssetHelper {
                 noteList.add(note);
             } while(cursor.moveToNext());
         }
+        notesDatabase.close();
         return noteList;
     }
 

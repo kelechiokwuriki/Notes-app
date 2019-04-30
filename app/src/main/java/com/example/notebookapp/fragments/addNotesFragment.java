@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.notebookapp.DatabaseControllers.DatabaseHelper;
-import com.example.notebookapp.Models.Note;
+import com.example.notebookapp.Bean.Note;
 import com.example.notebookapp.R;
 
 public class addNotesFragment extends Fragment {

@@ -17,8 +17,8 @@ import android.widget.EditText;
 
 import com.example.notebookapp.DatabaseControllers.DatabaseHelper;
 import com.example.notebookapp.fragments.addNotesFragment;
-import com.example.notebookapp.fragments.searchNewsFragment;
-import com.example.notebookapp.fragments.viewNotesFragment;
+import com.example.notebookapp.fragments.viewNewsFragment;
+import com.example.notebookapp.fragments.NoteViewFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,14 +31,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -114,12 +107,12 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.view_notes:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new viewNotesFragment()).commit();
+                        new NoteViewFragment()).commit();
                 break;
 
             case R.id.search_news:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new searchNewsFragment()).commit();
+                        new viewNewsFragment()).commit();
                 break;
         }
 

@@ -1,6 +1,4 @@
-package com.example.notebookapp.Models;
-
-import android.widget.EditText;
+package com.example.notebookapp.Bean;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

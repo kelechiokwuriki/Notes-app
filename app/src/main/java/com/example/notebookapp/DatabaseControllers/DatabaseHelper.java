@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.notebookapp.Models.Note;
+import com.example.notebookapp.Bean.Note;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -44,11 +44,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_3, note.getNote());
         contentValues.put(COLUMN_4, note.getCurrentDateOfCreation());
         long result = notesDatabase.insert(TABLE_NAME, null, contentValues);
+        closeDb();
+
 
         if(result == -1){
             return false;
         }
         else return true;
+
     }
 
 
