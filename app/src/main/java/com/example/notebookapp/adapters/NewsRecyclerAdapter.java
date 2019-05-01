@@ -33,20 +33,6 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
         final ViewHolder viewHolder = new ViewHolder(view);
 
-        //get the url from the news in newsList
-//        final String news = newsList.get(viewHolder.getAdapterPosition()).getWebUrl();
-
-
-//        TextView urlTextView = view.findViewById(R.id.newsUrlId);
-//
-//        urlTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(news));
-//                context.startActivity(intent);
-//            }
-//        });
-
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

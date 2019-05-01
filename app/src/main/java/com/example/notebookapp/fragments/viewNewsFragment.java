@@ -1,5 +1,8 @@
 package com.example.notebookapp.fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,19 +42,20 @@ public class viewNewsFragment extends Fragment  {
 
     private JSONArray jsonArray;
 
-    private RecyclerView recyclerView;
+
     private List<News> newsList = new ArrayList<>();
 
     private LinearLayoutManager linearLayoutManager;
-
     private NewsRecyclerAdapter newsRecyclerAdapter;
     private MaterialSearchBar materialSearchBar;
+    private RecyclerView recyclerView;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.view_news_fragment, container, false);
+        final View rootView = inflater.inflate(R.layout.view_news_fragment, container, false);
 
         recyclerView = rootView.findViewById(R.id.newsRecyclerView);
 
@@ -61,7 +67,6 @@ public class viewNewsFragment extends Fragment  {
 
         //GET DATA FROM API
 //        getData();
-
 
         //material search bar
         materialSearchBar = rootView.findViewById(R.id.searchBar);
@@ -78,8 +83,30 @@ public class viewNewsFragment extends Fragment  {
 
             @Override
             public void onSearchConfirmed(CharSequence text) {
-                //search for news in search bar
-                search(text.toString());
+
+                //https://developer.android.com/training/monitoring-device-state/connectivity-monitoring#java
+
+                //check for internet connectivity
+                //using connectivity managet
+                ConnectivityManager cm =
+                        (ConnectivityManager)getContext().getSystemService(getContext().CONNECTIVITY_SERVICE);
+
+                //network info
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+                boolean isConnected = activeNetwork != null &&
+                        activeNetwork.isConnectedOrConnecting();
+
+                Log.i("Conn", String.valueOf(isConnected));
+
+                if(isConnected){
+                    //search for news in search bar
+                    search(text.toString());
+                }
+
+                else {
+                    Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -92,12 +119,11 @@ public class viewNewsFragment extends Fragment  {
     }
 
     private void search(String text){
-        Log.i("Search method", "search ");
-
          JsonObjectRequest searchJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, searchUrl + text + "&api-key=aeaa25e2-6507-4e4f-b5d8-6142fa09ef81", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
                         List<News> newsSearchList = new ArrayList<>();
 
                         try{
@@ -121,9 +147,6 @@ public class viewNewsFragment extends Fragment  {
                             newsRecyclerAdapter = new NewsRecyclerAdapter(getContext(), newsSearchList);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                             recyclerView.setAdapter(newsRecyclerAdapter);
-
-
-
                             newsRecyclerAdapter.notifyDataSetChanged();
 
                         } catch (JSONException e){
@@ -133,6 +156,7 @@ public class viewNewsFragment extends Fragment  {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e("JSON error", error.getMessage());
 
             }
         });
