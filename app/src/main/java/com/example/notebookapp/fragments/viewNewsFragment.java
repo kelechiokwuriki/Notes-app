@@ -15,8 +15,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -33,16 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class viewNewsFragment extends Fragment {
+public class viewNewsFragment extends Fragment  {
     private final String URL = "https://content.guardianapis.com/search?q=football&api-key=aeaa25e2-6507-4e4f-b5d8-6142fa09ef81";
     private final String searchUrl = "https://content.guardianapis.com/search?q=";
 
-    private JsonObjectRequest jsonObjectRequest, searchJsonRequest;
     private JSONArray jsonArray;
 
-    private News news;
-
-    private RequestQueue requestQueue;
     private RecyclerView recyclerView;
     private List<News> newsList = new ArrayList<>();
 
@@ -73,14 +67,10 @@ public class viewNewsFragment extends Fragment {
         materialSearchBar = rootView.findViewById(R.id.searchBar);
         materialSearchBar.setHint("Search");
         materialSearchBar.setCardViewElevation(10);
-
         materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
                 if(!enabled){
-
-                    Log.i("Search state method", "Search state changed");
-
                     newsRecyclerAdapter = new NewsRecyclerAdapter(getContext(), newsList);
                     recyclerView.setAdapter(newsRecyclerAdapter);
                 }
@@ -88,6 +78,7 @@ public class viewNewsFragment extends Fragment {
 
             @Override
             public void onSearchConfirmed(CharSequence text) {
+                //search for news in search bar
                 search(text.toString());
             }
 
@@ -97,57 +88,7 @@ public class viewNewsFragment extends Fragment {
             }
         });
 
-
-
-//        Log.i("News list OUT", newsList.toString());
-
-
-
-//        requestQueue = Volley.newRequestQueue(getContext());
-//        requestQueue.add(jsonObjectRequest);
-
-
         return rootView;
-    }
-
-    private void getData(){
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-                    jsonArray = response.getJSONObject("response").getJSONArray("results");
-
-                    for (int i = 0; i < jsonArray.length(); i++){
-
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                        News news = new News();
-                        news.setWebTitle(jsonObject.getString("webTitle"));
-                        news.setWebUrl(jsonObject.getString("webPublicationDate"));
-
-                        newsList.add(news);
-                    }
-
-
-
-                    newsRecyclerAdapter.notifyDataSetChanged();
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("Volley error", "Error: " + error.getMessage());
-                Log.e("SITE INFO ERROR", "Site Info Error: " + error.getMessage());
-            }
-        });
-
     }
 
     private void search(String text){
@@ -168,7 +109,8 @@ public class viewNewsFragment extends Fragment {
 
                                 News news = new News();
                                 news.setWebTitle(jsonObject.getString("webTitle"));
-                                news.setWebUrl(jsonObject.getString("webPublicationDate"));
+                                news.setWebUrl(jsonObject.getString("webUrl"));
+                                news.setDate(jsonObject.getString("webPublicationDate"));
 
                                 newsSearchList.add(news);
                             }
@@ -179,6 +121,8 @@ public class viewNewsFragment extends Fragment {
                             newsRecyclerAdapter = new NewsRecyclerAdapter(getContext(), newsSearchList);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                             recyclerView.setAdapter(newsRecyclerAdapter);
+
+
 
                             newsRecyclerAdapter.notifyDataSetChanged();
 
@@ -193,9 +137,10 @@ public class viewNewsFragment extends Fragment {
             }
         });
 
-         RequestQueue searchQ = Volley.newRequestQueue(getContext());
-         searchQ.add(searchJsonObjectRequest);
+         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(searchJsonObjectRequest);
 
     }
+
 
 }
