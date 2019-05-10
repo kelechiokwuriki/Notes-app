@@ -1,6 +1,5 @@
 package com.example.notebookapp.fragments;
 
-import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,13 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -36,8 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class viewNewsFragment extends Fragment  {
-    private final String URL = "https://content.guardianapis.com/search?q=football&api-key=aeaa25e2-6507-4e4f-b5d8-6142fa09ef81";
+public class ViewNewsFragment extends Fragment  {
     private final String searchUrl = "https://content.guardianapis.com/search?q=";
 
     private JSONArray jsonArray;
@@ -65,9 +60,6 @@ public class viewNewsFragment extends Fragment  {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(newsRecyclerAdapter);
 
-        //GET DATA FROM API
-//        getData();
-
         //material search bar
         materialSearchBar = rootView.findViewById(R.id.searchBar);
         materialSearchBar.setHint("Search");
@@ -87,23 +79,22 @@ public class viewNewsFragment extends Fragment  {
                 //https://developer.android.com/training/monitoring-device-state/connectivity-monitoring#java
 
                 //check for internet connectivity
-                //using connectivity managet
+                //using connectivity manager
                 ConnectivityManager cm =
                         (ConnectivityManager)getContext().getSystemService(getContext().CONNECTIVITY_SERVICE);
 
-                //network info
+                //get network info from connectivity manager
                 NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
                 boolean isConnected = activeNetwork != null &&
                         activeNetwork.isConnectedOrConnecting();
 
-                Log.i("Conn", String.valueOf(isConnected));
+//                Log.i("Conn", String.valueOf(isConnected));
 
                 if(isConnected){
                     //search for news in search bar
                     search(text.toString());
                 }
-
                 else {
                     Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
                 }
@@ -120,49 +111,37 @@ public class viewNewsFragment extends Fragment  {
 
     private void search(String text){
          JsonObjectRequest searchJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, searchUrl + text + "&api-key=aeaa25e2-6507-4e4f-b5d8-6142fa09ef81", null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
+                 response -> {
 
-                        List<News> newsSearchList = new ArrayList<>();
+                     List<News> newsSearchList = new ArrayList<>();
 
-                        try{
-                            jsonArray = response.getJSONObject("response").getJSONArray("results");
+                     try{
+                         jsonArray = response.getJSONObject("response").getJSONArray("results");
 
-                            for (int i = 0; i < jsonArray.length(); i++){
+                         for (int i = 0; i < jsonArray.length(); i++){
 
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                                News news = new News();
-                                news.setWebTitle(jsonObject.getString("webTitle"));
-                                news.setWebUrl(jsonObject.getString("webUrl"));
-                                news.setDate(jsonObject.getString("webPublicationDate"));
+                             News news = new News();
+                             news.setWebTitle(jsonObject.getString("webTitle"));
+                             news.setWebUrl(jsonObject.getString("webUrl"));
+                             news.setDate(jsonObject.getString("webPublicationDate"));
 
-                                newsSearchList.add(news);
-                            }
+                             newsSearchList.add(news);
+                         }
 
-                            Log.i("Searched data", newsSearchList.toString());
+                         newsRecyclerAdapter = new NewsRecyclerAdapter(getContext(), newsSearchList);
+                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                         recyclerView.setAdapter(newsRecyclerAdapter);
+                         newsRecyclerAdapter.notifyDataSetChanged();
 
-
-                            newsRecyclerAdapter = new NewsRecyclerAdapter(getContext(), newsSearchList);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                            recyclerView.setAdapter(newsRecyclerAdapter);
-                            newsRecyclerAdapter.notifyDataSetChanged();
-
-                        } catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("JSON error", error.getMessage());
-
-            }
-        });
+                     } catch (JSONException e){
+                         e.printStackTrace();
+                     }
+                 }, error -> Log.e("JSON error", error.getMessage()));
 
          RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(searchJsonObjectRequest);
+         requestQueue.add(searchJsonObjectRequest);
 
     }
 

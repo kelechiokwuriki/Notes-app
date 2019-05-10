@@ -1,13 +1,21 @@
 package com.example.notebookapp.Bean;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class Note {
     private int noteId;
     private String noteTitle;
     private String note;
+    private String newsUrl;
+    private List<String> newsUrlList = new ArrayList<>();
+
+    private static final long serialVersionUID = 1L;
+
 
     private Date date;
     private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -38,6 +46,14 @@ public class Note {
         return noteId;
     }
 
+    public List<String> getNewsUrlList(){
+        return newsUrlList;
+    }
+
+    public void setNewsUrlList(List<String> newsUrlList) {
+        this.newsUrlList = newsUrlList;
+    }
+
     public void setNoteId(int noteId){
         this.noteId = noteId;
     }
@@ -64,6 +80,14 @@ public class Note {
 
     public String getCurrentDateOfCreation(){
         return dateOfCreation;
+    }
+
+    public String getNewsUrl(){
+        return newsUrl;
+    }
+
+    public void setNewsUrl(String newsUrl){
+        this.newsUrl = newsUrl;
     }
 
     public void setDateOfModification(String dateofModification){

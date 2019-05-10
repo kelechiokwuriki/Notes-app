@@ -15,7 +15,7 @@ import com.example.notebookapp.DatabaseControllers.DatabaseHelper;
 import com.example.notebookapp.Bean.Note;
 import com.example.notebookapp.R;
 
-public class addNotesFragment extends Fragment {
+public class AddNotesFragment extends Fragment {
 
     @Nullable
     @Override
@@ -29,16 +29,23 @@ public class addNotesFragment extends Fragment {
 
         Button addNoteButton = rootView.findViewById(R.id.buttonAddNote);
 
-        addNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(validateFields(noteTitleText, noteText)){
-                    Note note = new Note(noteTitleText.getText().toString(), noteText.getText().toString());
-                    db.insertNote(note);
-                    Toast.makeText(addNotesFragment.super.getContext(), "Note added", Toast.LENGTH_LONG).show();
-                }
+        addNoteButton.setOnClickListener(v -> {
+            if(validateFields(noteTitleText, noteText)){
+                Note note = new Note(noteTitleText.getText().toString(), noteText.getText().toString());
+                db.insertNote(note);
+                Toast.makeText(AddNotesFragment.super.getContext(), "Note added", Toast.LENGTH_LONG).show();
 
-                Toast.makeText(addNotesFragment.super.getContext(), "Please enter at least a note title", Toast.LENGTH_LONG).show();
+                NoteViewFragment noteViewFragment = new NoteViewFragment();
+
+                //switch to note view fragment
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, noteViewFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            else{
+                Toast.makeText(AddNotesFragment.super.getContext(),
+                        "Please enter at least a note title", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -46,8 +53,9 @@ public class addNotesFragment extends Fragment {
         return rootView;
     }
 
+    //validate add note input fields
     private boolean validateFields(EditText noteTitleText, EditText noteText){
-        if((noteText.getText().toString().isEmpty()) && (noteText.getText().toString().isEmpty())){
+        if(noteTitleText.toString().trim().isEmpty() || noteText.toString().trim().isEmpty()){
             return false;
         }
         return true;

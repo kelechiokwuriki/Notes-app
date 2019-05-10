@@ -17,9 +17,9 @@
             android:icon="@drawable/ic_search_black_24dp"
             android:title="Search news" />
         <item
-            android:id="@+id/settings"
+            android:id="@+id/developer_info"
             android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Settings" />
+            android:title="Developer Info" />
     </group>
 
 

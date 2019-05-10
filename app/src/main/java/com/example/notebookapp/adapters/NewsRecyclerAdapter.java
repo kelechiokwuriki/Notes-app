@@ -10,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.CheckBox;
+
 
 import com.example.notebookapp.Bean.News;
-import com.example.notebookapp.Bean.NewsList;
 import com.example.notebookapp.R;
 
 import java.util.List;
@@ -33,29 +34,25 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
         final ViewHolder viewHolder = new ViewHolder(view);
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                String news = newsList.get(viewHolder.getAdapterPosition()).getWebUrl();
+        viewHolder.newsUrl.setOnClickListener(v -> {
+            String news = newsList.get(viewHolder.getAdapterPosition()).getWebUrl();
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(news));
+            context.startActivity(intent);
 
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(news));
-                context.startActivity(intent);
-
-
-                Log.i("Clicked", String.valueOf(viewHolder.getAdapterPosition()));
-            }
+            Log.i("Clicked url info", String.valueOf(viewHolder.getAdapterPosition()));
         });
-
 
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+
         viewHolder.newsTitle.setText(newsList.get(i).getWebTitle());
         viewHolder.newsUrl.setText(newsList.get(i).getWebUrl());
         viewHolder.newsDate.setText(newsList.get(i).getDate());
+
     }
 
     @Override
@@ -63,8 +60,9 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         return newsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView newsTitle, newsUrl, newsDate;
+        CheckBox chkSelected;
 
         //set onclick listener on itemview (the whole row)
         public ViewHolder(@NonNull View itemView) {
@@ -72,7 +70,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             newsTitle = itemView.findViewById(R.id.newsTitleId);
             newsUrl = itemView.findViewById(R.id.newsUrlId);
             newsDate = itemView.findViewById(R.id.newsDateId);
-
         }
     }
+
 }

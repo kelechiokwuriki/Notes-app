@@ -1,10 +1,14 @@
 package com.example.notebookapp.Bean;
 
-public class News {
-    int id;
-    String webTitle;
-    String webUrl;
-    String date;
+import java.io.Serializable;
+
+public class News implements Serializable {
+    private int id;
+    private String webTitle;
+    private String webUrl;
+    private String date;
+    private boolean isSelected;
+
 
     public News(){}
 
@@ -47,6 +51,17 @@ public class News {
         return date;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
+
+
+
     @Override
     public String toString() {
         return "News{" +
@@ -54,6 +69,7 @@ public class News {
                 ", webTitle='" + webTitle + '\'' +
                 ", webUrl='" + webUrl + '\'' +
                 ", date='" + date + '\'' +
+                ", isSelected=" + isSelected +
                 '}';
     }
 }
