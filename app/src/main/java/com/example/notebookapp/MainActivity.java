@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.notebookapp.fragments.AddNotesFragment;
 import com.example.notebookapp.fragments.ViewNewsFragment;
@@ -101,7 +102,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.search_news:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ViewNewsFragment()).commit();
+                break;
 
+            case R.id.developer_info:
+                Toast.makeText(this, "App developed by Kelechi Matthew Okwuriki | Keo12@aber.ac.uk",
+                        Toast.LENGTH_LONG).show();
                 break;
         }
 
